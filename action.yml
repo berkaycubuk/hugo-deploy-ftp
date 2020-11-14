@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.MY_CUSTOM_THEME_REPO }} # add your access token to access custom theme repo
+          token: ${{ secrets.MY_TOKEN }} # add your access token to access custom theme repo
           submodules: recursive # you have to create submodules for themes
 
       - name: 🔧 Setup Hugo
