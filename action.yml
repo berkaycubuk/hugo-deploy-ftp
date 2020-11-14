@@ -1,35 +1,39 @@
 name: "HUGO Deploy FTP"
 description: "Deploy yout HUGO site to your FTP"
 author: "berkaycubuk"
+
 runs:
   using:
+
 branding:
   color: "purple"
   icon: "upload"
+
 on: [push]
+
 jobs:
   deploy:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.MY_CUSTOM_THEME_REPO }}
-          submodules: recursive
+          token: ${{ secrets.MY_CUSTOM_THEME_REPO }} # add your access token to access custom theme repo
+          submodules: recursive # you have to create submodules for themes
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+      - name: 🔧 Setup Hugo
+        uses: peaceiris/actions-hugo@v2 # thank you
         with:
-          hugo-version: "0.78.2"
+          hugo-version: "0.78.2" # choose your HUGO version
 
-      - name: Build
+      - name: 🔨 Build
         run: hugo --minify
 
-      - name: Deploy
-        uses: kevinpainchaud/simple-ftp-deploy-action@v1.1.0
+      - name: 💨 Deploy
+        uses: kevinpainchaud/simple-ftp-deploy-action@v1.1.0 # thank you
         with:
-          ftp_host: ftp.berkaycubuk.com
-          ftp_username: ${{ secrets.FTP_USERNAME }}
-          ftp_password: ${{ secrets.FTP_PASSWORD }}
-          local_source_dir: "public"
-          dist_target_dir: "public_html"
+          ftp_host: ${{ secrets.FTP_HOST }} # FTP Host URL
+          ftp_username: ${{ secrets.FTP_USERNAME }} # FTP Username
+          ftp_password: ${{ secrets.FTP_PASSWORD }} # FTP Password
+          local_source_dir: "public" # Local folder
+          dist_target_dir: "public_html" # Remote folder
           delete: "false"
