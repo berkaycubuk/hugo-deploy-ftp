@@ -1,0 +1,35 @@
+name: "HUGO Deploy FTP"
+description: "Deploy yout HUGO site to your FTP"
+author: "berkaycubuk"
+runs:
+  using:
+branding:
+  color: "purple"
+  icon: "upload"
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MY_CUSTOM_THEME_REPO }}
+          submodules: recursive
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.78.2"
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Deploy
+        uses: kevinpainchaud/simple-ftp-deploy-action@v1.1.0
+        with:
+          ftp_host: ftp.berkaycubuk.com
+          ftp_username: ${{ secrets.FTP_USERNAME }}
+          ftp_password: ${{ secrets.FTP_PASSWORD }}
+          local_source_dir: "public"
+          dist_target_dir: "public_html"
+          delete: "false"
